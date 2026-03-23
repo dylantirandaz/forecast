@@ -1,0 +1,102 @@
+[
+  {
+    "metaculus_id": 1,
+    "question_text": "Will the US enter a recession (two consecutive quarters of negative GDP growth) before January 1, 2027?",
+    "domain": "macro",
+    "description": "Resolves YES if the Bureau of Economic Analysis reports two consecutive quarters of negative real GDP growth (annualized) with the second quarter ending before January 1, 2027.",
+    "close_date": "2027-01-01T00:00:00Z",
+    "community_prediction": null,
+    "num_predictions": 0,
+    "url": ""
+  },
+  {
+    "metaculus_id": 2,
+    "question_text": "Will the Federal Reserve cut the federal funds rate to below 4% before July 1, 2026?",
+    "domain": "macro",
+    "description": "Resolves YES if the upper bound of the federal funds rate target range falls below 4.00% at any point before July 1, 2026.",
+    "close_date": "2026-07-01T00:00:00Z",
+    "community_prediction": null,
+    "num_predictions": 0,
+    "url": ""
+  },
+  {
+    "metaculus_id": 3,
+    "question_text": "Will GPT-5 (or equivalent next-generation OpenAI model) be publicly released before January 1, 2027?",
+    "domain": "technology",
+    "description": "Resolves YES if OpenAI publicly releases a model officially designated as GPT-5 or as the successor to GPT-4/GPT-4o before January 1, 2027. Must be available via API or ChatGPT.",
+    "close_date": "2027-01-01T00:00:00Z",
+    "community_prediction": null,
+    "num_predictions": 0,
+    "url": ""
+  },
+  {
+    "metaculus_id": 4,
+    "question_text": "Will NYC total residential building permits issued in 2026 be lower than in 2025?",
+    "domain": "housing",
+    "description": "Resolves YES if the total number of residential building permits issued by NYC DOB in calendar year 2026 is strictly less than the total issued in calendar year 2025.",
+    "close_date": "2027-03-01T00:00:00Z",
+    "community_prediction": null,
+    "num_predictions": 0,
+    "url": ""
+  },
+  {
+    "metaculus_id": 5,
+    "question_text": "Will US core CPI YoY inflation fall below 2.5% at any point before January 2027?",
+    "domain": "macro",
+    "description": "Resolves YES if the Bureau of Labor Statistics reports core CPI (all items less food and energy) year-over-year change below 2.5% for any month with data released before January 1, 2027.",
+    "close_date": "2027-01-01T00:00:00Z",
+    "community_prediction": null,
+    "num_predictions": 0,
+    "url": ""
+  },
+  {
+    "metaculus_id": 6,
+    "question_text": "Will any AI system achieve a score above 90% on the ARC-AGI-2 benchmark before 2027?",
+    "domain": "technology",
+    "description": "Resolves YES if a published result on the ARC-AGI-2 benchmark exceeds 90% accuracy before January 1, 2027. Must be from a credible source with reproducible methodology.",
+    "close_date": "2027-01-01T00:00:00Z",
+    "community_prediction": null,
+    "num_predictions": 0,
+    "url": ""
+  },
+  {
+    "metaculus_id": 7,
+    "question_text": "Will Zohran Mamdani win the NYC Democratic mayoral primary in June 2025?",
+    "domain": "politics",
+    "description": "Resolves YES if Zohran Mamdani wins the most votes in the NYC Democratic mayoral primary election held in June 2025.",
+    "close_date": "2025-06-30T00:00:00Z",
+    "community_prediction": null,
+    "num_predictions": 0,
+    "url": ""
+  },
+  {
+    "metaculus_id": 8,
+    "question_text": "Will the 30-year fixed mortgage rate in the US fall below 6% at any point in 2026?",
+    "domain": "macro",
+    "description": "Resolves YES if the Freddie Mac Primary Mortgage Market Survey reports the average 30-year fixed rate below 6.00% for any week in 2026.",
+    "close_date": "2027-01-01T00:00:00Z",
+    "community_prediction": null,
+    "num_predictions": 0,
+    "url": ""
+  },
+  {
+    "metaculus_id": 9,
+    "question_text": "Will the Russia-Ukraine conflict reach a formal ceasefire agreement before 2027?",
+    "domain": "geopolitics",
+    "description": "Resolves YES if Russia and Ukraine sign a formal ceasefire agreement before January 1, 2027. Both parties must be signatories.",
+    "close_date": "2027-01-01T00:00:00Z",
+    "community_prediction": null,
+    "num_predictions": 0,
+    "url": ""
+  },
+  {
+    "metaculus_id": 10,
+    "question_text": "Will the NYC Rent Guidelines Board approve a rent freeze (0% increase) for any lease term for the 2026-2027 cycle?",
+    "domain": "housing",
+    "description": "Resolves YES if the NYC RGB votes for a 0% increase on either 1-year or 2-year lease renewals for rent-stabilized apartments in the 2026-2027 guideline cycle.",
+    "close_date": "2026-10-01T00:00:00Z",
+    "community_prediction": null,
+    "num_predictions": 0,
+    "url": ""
+  }
+]

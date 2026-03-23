@@ -1,0 +1,26 @@
+[
+  {
+    "name": "resolved_80",
+    "description": "Complete evaluation set containing all 80 resolved binary questions across all domains and difficulty levels.",
+    "domains_included": ["macro", "politics", "technology", "business", "science", "housing"],
+    "difficulty_mix": {"easy": 18, "medium": 44, "hard": 18},
+    "num_questions": 80,
+    "question_indices": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79]
+  },
+  {
+    "name": "macro_only",
+    "description": "Evaluation set containing only macroeconomic questions for focused domain evaluation.",
+    "domains_included": ["macro"],
+    "difficulty_mix": {"easy": 4, "medium": 11, "hard": 5},
+    "num_questions": 20,
+    "question_indices": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+  },
+  {
+    "name": "hard_questions",
+    "description": "Evaluation set containing only hard-difficulty questions to stress-test model performance on challenging forecasts.",
+    "domains_included": ["macro", "politics", "technology", "business", "housing"],
+    "difficulty_mix": {"hard": 15},
+    "num_questions": 15,
+    "question_indices": [2,4,12,16,19,23,27,28,40,43,48,53,56,69,75]
+  }
+]

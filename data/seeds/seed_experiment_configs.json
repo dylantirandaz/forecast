@@ -1,0 +1,106 @@
+[
+  {
+    "name": "baseline_calibrated",
+    "description": "Default configuration with all pipeline features enabled and global calibration. This is the standard production config against which ablations are compared.",
+    "use_base_rates": true,
+    "use_evidence_scoring": true,
+    "use_recency_weighting": true,
+    "use_novelty_filter": true,
+    "use_calibration": true,
+    "calibration_scope": "global",
+    "evidence_weighting": "credibility",
+    "model_tier": "A",
+    "use_disagreement_second_pass": false,
+    "use_voi_gating": true,
+    "update_strategy": "incremental",
+    "max_budget_per_question": 0.10,
+    "expected_cost_range": {
+      "min_per_question": 0.02,
+      "max_per_question": 0.08,
+      "typical_per_question": 0.05
+    },
+    "expected_performance": {
+      "brier_score_range": [0.10, 0.18],
+      "log_score_range": [0.30, 0.55],
+      "notes": "Solid all-around performance with moderate cost. Best balance of accuracy and efficiency."
+    }
+  },
+  {
+    "name": "cheap_fast",
+    "description": "Minimal-cost configuration using only Tier A model with reduced evidence processing. Suitable for high-volume, low-stakes forecasts or when budget is constrained.",
+    "use_base_rates": true,
+    "use_evidence_scoring": true,
+    "use_recency_weighting": false,
+    "use_novelty_filter": false,
+    "use_calibration": true,
+    "calibration_scope": "global",
+    "evidence_weighting": "uniform",
+    "model_tier": "A",
+    "use_disagreement_second_pass": false,
+    "use_voi_gating": true,
+    "update_strategy": "incremental",
+    "max_budget_per_question": 0.03,
+    "expected_cost_range": {
+      "min_per_question": 0.01,
+      "max_per_question": 0.03,
+      "typical_per_question": 0.02
+    },
+    "expected_performance": {
+      "brier_score_range": [0.14, 0.25],
+      "log_score_range": [0.40, 0.70],
+      "notes": "Acceptable for screening or triage. Expect 20-40% accuracy degradation vs baseline on hard questions."
+    }
+  },
+  {
+    "name": "full_pipeline",
+    "description": "Maximum-quality configuration using both Tier A and Tier B models, all evidence features, disagreement detection, and domain-specific calibration. Highest accuracy but highest cost.",
+    "use_base_rates": true,
+    "use_evidence_scoring": true,
+    "use_recency_weighting": true,
+    "use_novelty_filter": true,
+    "use_calibration": true,
+    "calibration_scope": "domain_specific",
+    "evidence_weighting": "credibility",
+    "model_tier": "A+B",
+    "use_disagreement_second_pass": true,
+    "use_voi_gating": false,
+    "update_strategy": "incremental",
+    "max_budget_per_question": 0.50,
+    "expected_cost_range": {
+      "min_per_question": 0.10,
+      "max_per_question": 0.40,
+      "typical_per_question": 0.25
+    },
+    "expected_performance": {
+      "brier_score_range": [0.08, 0.14],
+      "log_score_range": [0.25, 0.45],
+      "notes": "Best accuracy, especially on hard questions with ambiguous evidence. 3-5x cost of baseline. Use for high-stakes forecasts."
+    }
+  },
+  {
+    "name": "benchmark_optimized",
+    "description": "Configuration tuned from ablation experiments to maximise ForecastBench and Metaculus tournament scores. Uses credibility-weighted evidence, recency weighting, domain calibration, and VoI gating to stay within moderate budget.",
+    "use_base_rates": true,
+    "use_evidence_scoring": true,
+    "use_recency_weighting": true,
+    "use_novelty_filter": true,
+    "use_calibration": true,
+    "calibration_scope": "domain_specific",
+    "evidence_weighting": "credibility",
+    "model_tier": "A",
+    "use_disagreement_second_pass": false,
+    "use_voi_gating": true,
+    "update_strategy": "incremental",
+    "max_budget_per_question": 0.12,
+    "expected_cost_range": {
+      "min_per_question": 0.03,
+      "max_per_question": 0.10,
+      "typical_per_question": 0.06
+    },
+    "expected_performance": {
+      "brier_score_range": [0.09, 0.16],
+      "log_score_range": [0.28, 0.50],
+      "notes": "Best cost-adjusted performance from ablation study. Domain calibration adds ~2% accuracy at minimal extra cost. Recommended for tournament submission."
+    }
+  }
+]

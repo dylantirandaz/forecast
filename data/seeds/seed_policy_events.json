@@ -1,0 +1,152 @@
+[
+  {
+    "name": "Housing Stability and Tenant Protection Act (HSTPA)",
+    "description": "Landmark state legislation that eliminated vacancy decontrol, limited vacancy bonuses to 0%, capped Individual Apartment Improvements (IAI) at $15,000 over 15 years, and made preferential rents the base for future increases. Widely considered the strongest tenant-protection law in decades, it fundamentally altered the economics of rent-stabilized housing.",
+    "event_type": "legislation",
+    "effective_date": "2019-06-14",
+    "announced_date": "2019-06-12",
+    "jurisdiction": "New York State",
+    "affected_targets": {
+      "metrics": ["stabilized_rent_growth", "multifamily_price_growth", "vacancy_rate"],
+      "direction": "downward_pressure_on_rents_and_values",
+      "magnitude": "large",
+      "channels": ["eliminated_vacancy_decontrol", "reduced_iai_incentive", "locked_preferential_rents"]
+    },
+    "source_url": "https://legislation.nysenate.gov/pdf/bills/2019/S6458"
+  },
+  {
+    "name": "421-a Tax Abatement Expiration",
+    "description": "The 421-a Affordable New York Housing Program expired on June 15, 2022, after the state legislature failed to renew or replace it. The program had provided property tax exemptions (up to 35 years) for new rental construction that included affordable units. Its absence has removed the primary financial incentive for building new rental housing outside Manhattan's luxury market.",
+    "event_type": "legislation",
+    "effective_date": "2022-06-15",
+    "announced_date": "2022-06-10",
+    "jurisdiction": "New York State",
+    "affected_targets": {
+      "metrics": ["annual_permit_growth", "annual_completion_growth", "market_rent_growth"],
+      "direction": "reduced_new_supply",
+      "magnitude": "large",
+      "channels": ["eliminated_tax_incentive", "reduced_rental_construction_feasibility"]
+    },
+    "source_url": "https://www.nysenate.gov/legislation/laws/RPT/421-A"
+  },
+  {
+    "name": "RGB 0% Rent Freeze (2020)",
+    "description": "The Rent Guidelines Board voted a 0% increase on both 1-year and 2-year lease renewals for the guideline year beginning October 1, 2020. This was only the second time in RGB history that both lease terms received a freeze (after 2016). The decision was influenced by the COVID-19 pandemic and tenant economic hardship.",
+    "event_type": "regulatory_change",
+    "effective_date": "2020-10-01",
+    "announced_date": "2020-06-17",
+    "jurisdiction": "New York City",
+    "affected_targets": {
+      "metrics": ["stabilized_rent_growth", "hpd_violation_growth"],
+      "direction": "rent_freeze",
+      "magnitude": "moderate",
+      "channels": ["zero_guideline_increase", "reduced_landlord_revenue"]
+    },
+    "source_url": "https://rentguidelinesboard.cityofnewyork.us/2020-apartment-loft-order/"
+  },
+  {
+    "name": "RGB 0% Rent Freeze (2021)",
+    "description": "For the second consecutive year, the RGB voted 0% on 1-year leases and 0% on 2-year leases. Back-to-back freezes put significant financial pressure on stabilized building owners, particularly those with rising insurance and maintenance costs. Industry groups reported increased building distress in the Bronx and Upper Manhattan.",
+    "event_type": "regulatory_change",
+    "effective_date": "2021-10-01",
+    "announced_date": "2021-06-23",
+    "jurisdiction": "New York City",
+    "affected_targets": {
+      "metrics": ["stabilized_rent_growth", "hpd_violation_growth", "multifamily_price_growth"],
+      "direction": "rent_freeze",
+      "magnitude": "moderate",
+      "channels": ["consecutive_freeze", "cumulative_revenue_shortfall", "deferred_maintenance"]
+    },
+    "source_url": "https://rentguidelinesboard.cityofnewyork.us/2021-apartment-loft-order/"
+  },
+  {
+    "name": "City of Yes for Housing Opportunity",
+    "description": "The most significant citywide zoning reform since 1961, City of Yes legalizes accessory dwelling units, permits modest density increases near transit, allows commercial-to-residential conversions, eliminates parking mandates for new construction, and enables town-center zoning in low-density areas. DCP projects 80,000+ new units enabled over 15 years.",
+    "event_type": "regulatory_change",
+    "effective_date": "2025-03-01",
+    "announced_date": "2024-12-05",
+    "jurisdiction": "New York City",
+    "affected_targets": {
+      "metrics": ["annual_permit_growth", "annual_completion_growth", "market_rent_growth", "vacancy_rate"],
+      "direction": "increased_supply",
+      "magnitude": "moderate_to_large",
+      "channels": ["upzoning", "adu_legalization", "parking_mandate_removal", "commercial_conversion"]
+    },
+    "source_url": "https://www.nyc.gov/site/planning/plans/city-of-yes/city-of-yes-housing-opportunity.page"
+  },
+  {
+    "name": "RGB 2.75% / 5.25% Increase (2024)",
+    "description": "After two years of above-inflation increases following the COVID freezes, the RGB voted 2.75% for 1-year leases and 5.25% for 2-year leases. Tenant groups criticized the increases as unaffordable; landlord groups said they remained below operating cost growth. The vote reflected the board's attempt to balance building viability with affordability.",
+    "event_type": "regulatory_change",
+    "effective_date": "2024-10-01",
+    "announced_date": "2024-06-17",
+    "jurisdiction": "New York City",
+    "affected_targets": {
+      "metrics": ["stabilized_rent_growth"],
+      "direction": "moderate_increase",
+      "magnitude": "small",
+      "channels": ["guideline_increase"]
+    },
+    "source_url": "https://rentguidelinesboard.cityofnewyork.us/2024-apartment-loft-order/"
+  },
+  {
+    "name": "Good Cause Eviction Law (State)",
+    "description": "New York State enacted good cause eviction protections for tenants in unregulated housing, limiting landlords' ability to refuse lease renewals or impose unreasonable rent increases (generally above CPI + 5%). The law exempts buildings with fewer than 10 units, owner-occupied buildings, and units built within 30 years. It effectively extends a form of rent regulation to a portion of the market-rate stock.",
+    "event_type": "legislation",
+    "effective_date": "2024-04-20",
+    "announced_date": "2024-04-10",
+    "jurisdiction": "New York State",
+    "affected_targets": {
+      "metrics": ["market_rent_growth", "annual_permit_growth", "multifamily_price_growth"],
+      "direction": "dampens_rent_growth_in_covered_units",
+      "magnitude": "moderate",
+      "channels": ["caps_on_renewal_increases", "reduced_landlord_flexibility", "possible_supply_deterrent"]
+    },
+    "source_url": "https://legislation.nysenate.gov/pdf/bills/2023/S2721C"
+  },
+  {
+    "name": "RGB 0% Rent Freeze (2016)",
+    "description": "The RGB voted a 0% increase for 1-year leases for the first time in the board's history, with a 2% increase for 2-year leases. The decision was made under Mayor de Blasio's appointees and signaled a more tenant-friendly board composition. It set a precedent for future freeze votes.",
+    "event_type": "regulatory_change",
+    "effective_date": "2016-10-01",
+    "announced_date": "2016-06-27",
+    "jurisdiction": "New York City",
+    "affected_targets": {
+      "metrics": ["stabilized_rent_growth"],
+      "direction": "rent_freeze",
+      "magnitude": "small",
+      "channels": ["first_ever_zero_guideline", "precedent_setting"]
+    },
+    "source_url": "https://rentguidelinesboard.cityofnewyork.us/2016-apartment-loft-order/"
+  },
+  {
+    "name": "COVID-19 Eviction Moratorium",
+    "description": "Multiple overlapping federal, state, and local eviction moratoria prevented residential evictions during the pandemic. The state moratorium (CEEFPA) expired January 15, 2022. During the moratorium period, an estimated 200,000+ NYC households fell behind on rent, creating a backlog of housing court cases.",
+    "event_type": "legislation",
+    "effective_date": "2020-03-20",
+    "announced_date": "2020-03-20",
+    "jurisdiction": "New York State",
+    "affected_targets": {
+      "metrics": ["vacancy_rate", "stabilized_rent_growth", "hpd_violation_growth"],
+      "direction": "froze_turnover",
+      "magnitude": "large",
+      "channels": ["eviction_freeze", "rent_arrears_accumulation", "reduced_vacancy"]
+    },
+    "source_url": "https://legislation.nysenate.gov/pdf/bills/2021/S50001"
+  },
+  {
+    "name": "NYC Housing Blueprint: Housing Our Neighbors",
+    "description": "Mayor Adams's 2023 housing plan targeting 500,000 new and preserved units over the next decade through zoning reform (City of Yes), office-to-residential conversions, public land development, and streamlined approvals. The plan combines regulatory relief with capital investment but depends heavily on Albany cooperation for 421-a replacement.",
+    "event_type": "executive_order",
+    "effective_date": "2023-06-14",
+    "announced_date": "2023-06-14",
+    "jurisdiction": "New York City",
+    "affected_targets": {
+      "metrics": ["annual_permit_growth", "annual_completion_growth", "vacancy_rate"],
+      "direction": "increased_supply_target",
+      "magnitude": "aspirational_large",
+      "channels": ["zoning_reform", "office_conversion", "public_land_disposition", "streamlined_approvals"]
+    },
+    "source_url": "https://www.nyc.gov/site/housing/about/housing-blueprint.page"
+  }
+]

@@ -1,0 +1,87 @@
+version: "3.9"
+
+# Development overrides -- use with:
+#   docker compose -f docker-compose.yml -f infra/docker-compose.dev.yml up
+
+services:
+  postgres:
+    ports:
+      - "5432:5432"
+
+  redis:
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --log-level debug
+    volumes:
+      - ../backend:/app
+    environment:
+      - DEBUG=true
+      - ENVIRONMENT=development
+      - DB_ECHO=true
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    command: npm run dev
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - WATCHPACK_POLLING=true
+    ports:
+      - "3000:3000"
+
+  celery-worker:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    command: >
+      celery -A app.tasks.celery_app worker
+      --loglevel=debug
+      --concurrency=2
+      --autoscale=4,2
+    volumes:
+      - ../backend:/app
+    environment:
+      - DEBUG=true
+      - ENVIRONMENT=development
+
+  celery-beat:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    command: celery -A app.tasks.celery_app beat --loglevel=debug
+    volumes:
+      - ../backend:/app
+    environment:
+      - DEBUG=true
+      - ENVIRONMENT=development
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  flower:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    command: celery -A app.tasks.celery_app flower --port=5555
+    ports:
+      - "5555:5555"
+    environment:
+      - DEBUG=true
+    depends_on:
+      redis:
+        condition: service_healthy

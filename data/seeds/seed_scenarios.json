@@ -1,0 +1,123 @@
+[
+  {
+    "name": "soft_implementation",
+    "narrative": "The RGB adopts modest increases of 0-1% for two consecutive years, signaling restraint without a hard freeze. City rhetoric emphasizes tenant protection but avoids alarming capital markets. Landlords absorb short-term margin compression while waiting for a policy reversal.",
+    "assumptions": [
+      "RGB votes 0-1% increases for 1-year leases in 2026 and 2027",
+      "No changes to preferential rent or vacancy decontrol thresholds",
+      "421-a successor program remains stalled in Albany",
+      "Federal interest rates remain elevated (6%+ on 30-year mortgages)",
+      "No major new city capital commitments to affordable housing",
+      "Property tax assessments continue on existing trajectory"
+    ],
+    "policy_levers": {
+      "rgb_1yr_increase_pct": 0.5,
+      "rgb_2yr_increase_pct": 1.5,
+      "vacancy_bonus_pct": 0.0,
+      "mci_cap_pct": 2.0,
+      "iai_threshold_usd": 15000,
+      "preferential_rent_locked": true,
+      "good_cause_eviction": false,
+      "tax_abatement_program": "none"
+    },
+    "timing": {
+      "start_date": "2026-10-01",
+      "end_date": "2028-09-30",
+      "phase_in_months": 0
+    },
+    "intensity": "soft",
+    "expected_channels": {
+      "new_construction": "Modest decline (5-10%) as developers pause marginal projects",
+      "building_maintenance": "Slight decline in discretionary maintenance spending",
+      "market_rents": "Mild upward pressure (+2-3% above baseline) as regulated supply tightens",
+      "property_values": "Stabilized building values dip 3-8%",
+      "tenant_turnover": "Reduced turnover as tenants lock in below-market rents",
+      "capital_investment": "Deferred rehab spending, MCI filings decline"
+    }
+  },
+  {
+    "name": "full_rent_freeze",
+    "narrative": "The RGB votes a strict 0% increase on both 1-year and 2-year leases for four consecutive years, representing the most aggressive tenant-protection stance since the board's creation. Mayor Mamdani frames this as emergency relief during a cost-of-living crisis. The policy triggers significant behavioral changes across the housing market, with landlords, developers, and lenders all adjusting expectations.",
+    "assumptions": [
+      "RGB votes 0% on all lease renewals for 4 consecutive years (2026-2029)",
+      "Vacancy bonus eliminated",
+      "Individual Apartment Improvement (IAI) spending cap tightened",
+      "Major Capital Improvement (MCI) rent increases capped at 1%",
+      "Good Cause Eviction enacted statewide",
+      "No new tax abatement program for rental construction",
+      "Property taxes continue rising at 3-5% annually",
+      "Operating costs (insurance, utilities, labor) rising 4-6% annually",
+      "Federal mortgage rates remain above 6%"
+    ],
+    "policy_levers": {
+      "rgb_1yr_increase_pct": 0.0,
+      "rgb_2yr_increase_pct": 0.0,
+      "vacancy_bonus_pct": 0.0,
+      "mci_cap_pct": 1.0,
+      "iai_threshold_usd": 10000,
+      "preferential_rent_locked": true,
+      "good_cause_eviction": true,
+      "tax_abatement_program": "none"
+    },
+    "timing": {
+      "start_date": "2026-10-01",
+      "end_date": "2030-09-30",
+      "phase_in_months": 0
+    },
+    "intensity": "aggressive",
+    "expected_channels": {
+      "new_construction": "Sharp decline (20-35%) in new multifamily starts, especially in outer boroughs",
+      "building_maintenance": "Significant deferred maintenance; HPD violations rise 15-25% over 2 years",
+      "market_rents": "Strong upward pressure (+8-15%) as supply contracts and demand shifts to unregulated stock",
+      "property_values": "Stabilized building values drop 15-30%; distressed sales increase",
+      "tenant_turnover": "Near-zero voluntary turnover in stabilized units; warehousing risk",
+      "capital_investment": "MCI and rehab investment collapses; building systems deteriorate",
+      "municipal_finance": "Property tax revenue growth slows as assessments decline on stabilized buildings",
+      "displacement": "Increased harassment complaints as some landlords seek buyouts"
+    }
+  },
+  {
+    "name": "freeze_plus_buildout",
+    "narrative": "Combines a 2-year rent freeze with an aggressive city-led affordable housing construction program. The administration pairs tenant protection with supply-side investment, committing $5B+ in capital funds for public and nonprofit housing construction on city-owned land. The theory is that public supply can offset the private-market chilling effect of the freeze.",
+    "assumptions": [
+      "RGB votes 0% for 2 consecutive years (2026-2027), then returns to modest increases",
+      "City commits $5B in capital budget for affordable housing construction",
+      "City-owned sites fast-tracked for development (streamlined ULURP)",
+      "Mandatory inclusionary housing expanded in all rezonings",
+      "New public developer entity created (modeled on Montgomery County HOC)",
+      "Federal LIHTC allocation increased via state advocacy",
+      "Property tax relief for buildings maintaining affordability covenants",
+      "Good Cause Eviction enacted",
+      "Mortgage rates begin declining toward 5.5% by 2028"
+    ],
+    "policy_levers": {
+      "rgb_1yr_increase_pct": 0.0,
+      "rgb_2yr_increase_pct": 0.0,
+      "vacancy_bonus_pct": 0.0,
+      "mci_cap_pct": 2.0,
+      "iai_threshold_usd": 15000,
+      "preferential_rent_locked": true,
+      "good_cause_eviction": true,
+      "tax_abatement_program": "public_buildout_421a_successor",
+      "city_capital_commitment_usd": 5000000000,
+      "public_housing_target_units": 25000,
+      "mandatory_inclusionary_pct": 25
+    },
+    "timing": {
+      "start_date": "2026-10-01",
+      "end_date": "2030-09-30",
+      "phase_in_months": 6
+    },
+    "intensity": "aggressive",
+    "expected_channels": {
+      "new_construction": "Private starts decline 15-25%, but public/nonprofit starts add 5,000-8,000 units/year after ramp-up",
+      "building_maintenance": "Moderate deferred maintenance during freeze years; less severe than pure freeze due to shorter duration",
+      "market_rents": "Moderate upward pressure (+4-8%) initially, stabilizing as public supply comes online (18-36 month lag)",
+      "property_values": "Initial decline (10-20%) in stabilized buildings, partial recovery as successor abatement materializes",
+      "tenant_turnover": "Low turnover during freeze, normalizes after",
+      "capital_investment": "Private MCI investment declines but partially offset by city-funded rehab programs",
+      "municipal_finance": "Short-term strain on capital budget; long-term property tax base growth from new public housing",
+      "affordability": "Net improvement in affordability metrics after 3-4 years as public units deliver"
+    }
+  }
+]

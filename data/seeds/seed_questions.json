@@ -1,0 +1,110 @@
+[
+  {
+    "title": "Will NYC total housing permits decline >10% YoY under a 4-year rent freeze?",
+    "description": "Measures whether a sustained rent freeze would deter new construction by reducing expected returns, leading to a measurable drop in DOB-issued residential permits compared to the prior year.",
+    "target_type": "binary",
+    "target_metric": "annual_permit_count_yoy_change",
+    "unit_of_analysis": "citywide",
+    "forecast_horizon_months": 24,
+    "resolution_criteria": "Resolves YES if the DOB permit count for new residential buildings (job type NB) in the 12 months ending at the horizon date is more than 10% below the preceding 12-month period. Source: NYC DOB permit issuance data."
+  },
+  {
+    "title": "Will rent-stabilized building distress rise >20% within 24 months under repeated freezes?",
+    "description": "Tracks whether consecutive years of zero or near-zero RGB increases lead to a significant uptick in building distress indicators (HPD violations, tax delinquencies, deferred maintenance complaints).",
+    "target_type": "binary",
+    "target_metric": "stabilized_building_distress_index",
+    "unit_of_analysis": "rent_stabilized_stock",
+    "forecast_horizon_months": 24,
+    "resolution_criteria": "Resolves YES if a composite distress index (HPD Class B+C violations per 1,000 stabilized units, weighted by severity) rises more than 20% from the baseline measured at question creation. Source: HPD violations data matched to DHCR rent-stabilized building list."
+  },
+  {
+    "title": "Expected % change in citywide median market rent under rent freeze scenario",
+    "description": "Estimates the net effect of a rent freeze on the unregulated market segment. Theory suggests upward pressure (reduced supply, landlord exit from stabilized stock) but could be offset if demand falls.",
+    "target_type": "continuous",
+    "target_metric": "median_market_rent_pct_change",
+    "unit_of_analysis": "citywide_market_rate",
+    "forecast_horizon_months": 12,
+    "resolution_criteria": "Resolved to the 12-month percentage change in citywide median asking rent for market-rate apartments as reported by the NYC Housing Vacancy Survey or StreetEasy/Zillow Observed Rent Index."
+  },
+  {
+    "title": "Expected % change in affordable housing completions under public buildout scenario",
+    "description": "Under a scenario where the city accelerates public and nonprofit affordable housing construction, how many additional affordable units will be completed relative to the historical baseline (~15,000/year under HPD programs)?",
+    "target_type": "continuous",
+    "target_metric": "affordable_completions_pct_change",
+    "unit_of_analysis": "citywide_affordable",
+    "forecast_horizon_months": 36,
+    "resolution_criteria": "Resolved to the percentage change in HPD-financed or city-subsidized affordable housing completions in the 12-month period ending at the horizon, compared to the trailing 3-year average before the scenario start date."
+  },
+  {
+    "title": "Will multifamily transaction prices decline more in stabilized-heavy neighborhoods?",
+    "description": "Tests whether neighborhoods with >50% rent-stabilized share see a larger drop in per-unit multifamily sale prices compared to neighborhoods with <25% stabilized share under a rent freeze.",
+    "target_type": "binary",
+    "target_metric": "multifamily_price_differential",
+    "unit_of_analysis": "neighborhood_comparison",
+    "forecast_horizon_months": 18,
+    "resolution_criteria": "Resolves YES if the median $/unit for multifamily sales in high-stabilized neighborhoods (>50% regulated) declines by at least 5 percentage points more than in low-stabilized neighborhoods (<25% regulated) over the horizon period. Source: NYC ACRIS sales data matched to DHCR stabilized building lists."
+  },
+  {
+    "title": "Will NYC rental vacancy rate remain below 3% through 2028?",
+    "description": "The 2023 NYCHVS showed a historically low 1.4% vacancy rate. This question asks whether structural shortage persists regardless of policy intervention.",
+    "target_type": "binary",
+    "target_metric": "rental_vacancy_rate",
+    "unit_of_analysis": "citywide",
+    "forecast_horizon_months": 24,
+    "resolution_criteria": "Resolves YES if the next available NYCHVS or ACS 1-year estimate shows a citywide rental vacancy rate below 3.0%."
+  },
+  {
+    "title": "Expected number of 421-a successor program units started within 24 months",
+    "description": "With 421-a expired (June 2022), forecasts the volume of new construction that would occur under any successor tax incentive program for rental housing.",
+    "target_type": "continuous",
+    "target_metric": "successor_program_unit_starts",
+    "unit_of_analysis": "citywide",
+    "forecast_horizon_months": 24,
+    "resolution_criteria": "Resolved to the total number of residential units in DOB-permitted new buildings that qualify for a 421-a successor tax abatement program, as reported by HPD or NYC Finance, in the 24-month window."
+  },
+  {
+    "title": "Will Bronx see >15% increase in HPD emergency repair program spending?",
+    "description": "Under a rent freeze, landlords in lower-rent boroughs may defer maintenance more aggressively, forcing HPD's Emergency Repair Program (ERP) to step in.",
+    "target_type": "binary",
+    "target_metric": "hpd_erp_spending_bronx",
+    "unit_of_analysis": "borough_bronx",
+    "forecast_horizon_months": 18,
+    "resolution_criteria": "Resolves YES if HPD Emergency Repair Program expenditures in the Bronx increase more than 15% in the 12-month period ending at the horizon, compared to the prior 12-month baseline. Source: HPD annual report or city comptroller data."
+  },
+  {
+    "title": "Expected change in rent-to-income ratio for NYC median renter household",
+    "description": "Combines rent trajectory and income growth forecasts to estimate affordability burden changes under various policy scenarios.",
+    "target_type": "continuous",
+    "target_metric": "median_rent_to_income_ratio_change",
+    "unit_of_analysis": "citywide_renter_households",
+    "forecast_horizon_months": 12,
+    "resolution_criteria": "Resolved to the percentage-point change in the citywide median gross-rent-to-household-income ratio, using ACS 1-year estimates or NYCHVS data."
+  },
+  {
+    "title": "Will condo conversion filings increase >25% under prolonged rent freeze?",
+    "description": "Tests the hypothesis that landlords respond to rent freezes by converting rental buildings to condos to exit the regulated market.",
+    "target_type": "binary",
+    "target_metric": "condo_conversion_filings",
+    "unit_of_analysis": "citywide",
+    "forecast_horizon_months": 24,
+    "resolution_criteria": "Resolves YES if the number of condo/co-op conversion plans filed with the AG's office increases more than 25% over the 24-month horizon compared to the preceding 24-month baseline."
+  },
+  {
+    "title": "Expected % change in new housing starts in City of Yes rezoned areas",
+    "description": "Measures the incremental supply response from the City of Yes zoning reform, which allows more density in transit-rich and commercial areas.",
+    "target_type": "continuous",
+    "target_metric": "city_of_yes_area_housing_starts_pct_change",
+    "unit_of_analysis": "rezoned_areas",
+    "forecast_horizon_months": 36,
+    "resolution_criteria": "Resolved to the percentage change in new building permits (NB job type) within City of Yes affected zoning lots, comparing the 12 months ending at the horizon to the 12 months before the reform effective date. Source: DOB permits geocoded to DCP zoning lots."
+  },
+  {
+    "title": "Will rent-stabilized unit count fall below 1 million by 2028?",
+    "description": "Tracks the net effect of deregulation (on vacancy or high-rent), conversions, and new construction on the regulated housing stock.",
+    "target_type": "binary",
+    "target_metric": "rent_stabilized_unit_count",
+    "unit_of_analysis": "citywide",
+    "forecast_horizon_months": 24,
+    "resolution_criteria": "Resolves YES if the DHCR annual count of registered rent-stabilized units falls below 1,000,000. Source: DHCR Rent Stabilization Fact Sheets."
+  }
+]
