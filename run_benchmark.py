@@ -36,7 +36,7 @@ from forecast.display import print_header
 from forecast.llm import call_llm, estimate_cost, parse_llm_json
 from forecast.prompts import FORECASTBENCH_PROMPT, FRED_FORECAST_PROMPT, SYSTEM_PROMPT
 from forecast.search import search as exa_search
-from forecast.search import set_exa_key
+from forecast.search import set_asknews_credentials, set_exa_key, set_search_provider
 
 _fred_api_key = ""
 
@@ -294,8 +294,13 @@ def main():
         sys.exit(1)
 
     global _fred_api_key
-    if args.exa_key:
-        set_exa_key(args.exa_key)
+    # Exa disabled — AskNews only
+    # if args.exa_key:
+    #     set_exa_key(args.exa_key)
+    if os.environ.get("ASKNEWS_CLIENT_ID") and os.environ.get("ASKNEWS_CLIENT_SECRET"):
+        set_asknews_credentials(os.environ["ASKNEWS_CLIENT_ID"], os.environ["ASKNEWS_CLIENT_SECRET"])
+    if os.environ.get("SEARCH_PROVIDER"):
+        set_search_provider(os.environ["SEARCH_PROVIDER"])
     if args.fred_key:
         _fred_api_key = args.fred_key
     elif os.environ.get("FRED_API_KEY"):

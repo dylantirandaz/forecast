@@ -53,7 +53,7 @@ from forecast.metrics import (
     log_score,
 )
 from forecast.prompts import DIRECT_FORECAST_PROMPT, EVIDENCE_SCORING_PROMPT, STRUCTURED_FORECAST_PROMPT, SYSTEM_PROMPT
-from forecast.search import search_for_question, set_exa_key
+from forecast.search import search_for_question, set_asknews_credentials, set_exa_key, set_search_provider  # noqa: F401 (set_exa_key is a no-op)
 
 
 @dataclass
@@ -434,13 +434,21 @@ def main():
         print("ERROR: Set OPENAI_API_KEY environment variable")
         sys.exit(1)
 
-    if args.exa_key:
-        set_exa_key(args.exa_key)
-    elif os.environ.get("EXA_API_KEY"):
-        set_exa_key(os.environ["EXA_API_KEY"])
+    # Exa disabled — AskNews only
+    # if args.exa_key:
+    #     set_exa_key(args.exa_key)
+    # elif os.environ.get("EXA_API_KEY"):
+    #     set_exa_key(os.environ["EXA_API_KEY"])
 
-    if args.search and not (args.exa_key or os.environ.get("EXA_API_KEY")):
-        print("WARNING: --search requires EXA_API_KEY. Set it or pass --exa-key")
+    if os.environ.get("ASKNEWS_CLIENT_ID") and os.environ.get("ASKNEWS_CLIENT_SECRET"):
+        set_asknews_credentials(os.environ["ASKNEWS_CLIENT_ID"], os.environ["ASKNEWS_CLIENT_SECRET"])
+
+    if os.environ.get("SEARCH_PROVIDER"):
+        set_search_provider(os.environ["SEARCH_PROVIDER"])
+
+    has_search_provider = os.environ.get("ASKNEWS_CLIENT_ID") and os.environ.get("ASKNEWS_CLIENT_SECRET")
+    if args.search and not has_search_provider:
+        print("WARNING: --search requires ASKNEWS_CLIENT_ID and ASKNEWS_CLIENT_SECRET")
 
     if args.compare:
         print_header("STRUCTURED vs DIRECT comparison")

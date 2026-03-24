@@ -170,6 +170,27 @@ Produce your forecast. Consider the freeze value (baseline at question creation)
 Respond with JSON:
 {{"probability": <float 0.05-0.95>, "confidence": "low|medium|high", "rationale": "<2 sentences>"}}"""
 
+JUDGE_LEAK_FILTER_PROMPT = """You are a temporal information filter for a forecasting system.
+
+FORECASTING QUESTION: {question}
+INFORMATION CUTOFF DATE: {cutoff_date}
+
+Your job: review {n_items} non-news evidence items (statistics pages, Wikipedia, historical data, research) and detect any information that reveals the OUTCOME of the forecasting question after the cutoff date.
+
+KEEP: base rates, historical patterns, methodology descriptions, pre-cutoff statistics, background context
+REMOVE: post-cutoff results, resolution of the question, final outcomes, "as of [post-cutoff date]" data
+
+For each item, respond with one of:
+- "pass" — no leakage detected, keep as-is
+- "redact" — contains useful context BUT also has leaking info. Provide cleaned_content with the leaking sentences/data removed.
+- "block" — the item exists primarily to report the outcome. Remove entirely.
+
+EVIDENCE TO REVIEW:
+{evidence}
+
+Respond with JSON:
+{{"items": [{{"idx": 0, "verdict": "pass|redact|block", "cleaned_content": "...(only if redact)...", "reason": "brief explanation"}}]}}"""
+
 FRED_FORECAST_PROMPT = """Forecast this FRED economic data question.
 
 QUESTION: {question}
