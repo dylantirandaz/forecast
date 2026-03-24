@@ -1,6 +1,7 @@
 # ── Results / secrets ─────────────────────────────────────
 results_*.json
 benchmark_*.json
+eval_*.json
 my_forecasts.json
 metaculus_forecasts.json
 *.output

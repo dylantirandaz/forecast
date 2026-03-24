@@ -53,7 +53,7 @@ from forecast.metrics import (
     log_score,
 )
 from forecast.prompts import DIRECT_FORECAST_PROMPT, EVIDENCE_SCORING_PROMPT, STRUCTURED_FORECAST_PROMPT, SYSTEM_PROMPT
-from forecast.search import search_for_question, set_asknews_credentials, set_exa_key, set_search_provider  # noqa: F401 (set_exa_key is a no-op)
+from forecast.search import search_for_question, set_asknews_credentials, set_search_provider
 
 
 @dataclass
@@ -128,6 +128,10 @@ def _gather_evidence(
 ) -> list[dict]:
     available = [e for e in evidence if parse_date(e["published_at"]) <= cutoff_date]
     if use_search:
+        # AskNews historical mode already time-gates articles to before
+        # the cutoff date. The judge model provides a second layer of
+        # filtering for non-news sources. We still date-check as a
+        # safety net in case any article slips through.
         for ev in search_for_question(
             question["question_text"],
             domain,
@@ -150,7 +154,7 @@ def _gather_evidence(
                     if parse_date(ev.published_at) <= cutoff_date:
                         available.append(ev_dict)
                 except Exception:
-                    pass
+                    available.append(ev_dict)
             else:
                 available.append(ev_dict)
     available.sort(key=lambda e: e.get("published_at", ""))
@@ -357,7 +361,7 @@ def run(args):
                     f"  {label}: {pred.predicted:.2f} (actual={pred.actual:.0f}) brier={pred.brier:.3f} ${pred.cost:.4f} {pred.latency_ms}ms [{ok}]"
                 )
                 if pred.rationale:
-                    print(f"         -> {pred.rationale[:120]}")
+                    print(f"         -> {pred.rationale[:120].encode('ascii', 'replace').decode()}")
             else:
                 print(
                     f"  {label}: pred={pred.predicted:.2f} actual={pred.actual:.0f} brier={pred.brier:.3f} ${pred.cost:.4f}",
@@ -434,21 +438,17 @@ def main():
         print("ERROR: Set OPENAI_API_KEY environment variable")
         sys.exit(1)
 
-    # Exa disabled — AskNews only
-    # if args.exa_key:
-    #     set_exa_key(args.exa_key)
-    # elif os.environ.get("EXA_API_KEY"):
-    #     set_exa_key(os.environ["EXA_API_KEY"])
-
-    if os.environ.get("ASKNEWS_CLIENT_ID") and os.environ.get("ASKNEWS_CLIENT_SECRET"):
+    if os.environ.get("ASKNEWS_API_KEY"):
+        set_asknews_credentials(api_key=os.environ["ASKNEWS_API_KEY"])
+    elif os.environ.get("ASKNEWS_CLIENT_ID") and os.environ.get("ASKNEWS_CLIENT_SECRET"):
         set_asknews_credentials(os.environ["ASKNEWS_CLIENT_ID"], os.environ["ASKNEWS_CLIENT_SECRET"])
 
     if os.environ.get("SEARCH_PROVIDER"):
         set_search_provider(os.environ["SEARCH_PROVIDER"])
 
-    has_search_provider = os.environ.get("ASKNEWS_CLIENT_ID") and os.environ.get("ASKNEWS_CLIENT_SECRET")
+    has_search_provider = os.environ.get("ASKNEWS_API_KEY") or (os.environ.get("ASKNEWS_CLIENT_ID") and os.environ.get("ASKNEWS_CLIENT_SECRET"))
     if args.search and not has_search_provider:
-        print("WARNING: --search requires ASKNEWS_CLIENT_ID and ASKNEWS_CLIENT_SECRET")
+        print("WARNING: --search requires ASKNEWS_API_KEY or ASKNEWS_CLIENT_ID/SECRET")
 
     if args.compare:
         print_header("STRUCTURED vs DIRECT comparison")

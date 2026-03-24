@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import timedelta
 from urllib.parse import urlparse
 
 from forecast.config import SOURCE_QUALITY
@@ -22,28 +22,24 @@ class SearchResult:
     published_at: str
 
 
-# _exa_api_key: str = ""
+_asknews_api_key: str = ""
 _asknews_client_id: str = ""
 _asknews_client_secret: str = ""
-_search_provider: str = "asknews"  # "asknews" only — Exa disabled
+_search_provider: str = "asknews"
 _search_cache: dict[str, list[SearchResult]] = {}
 
 
-# def set_exa_key(key: str) -> None:
-#     global _exa_api_key
-#     _exa_api_key = key
-
-
 def set_exa_key(key: str) -> None:
-    """Exa disabled — this is a no-op kept for import compatibility."""
-    pass
+    """No-op kept for import compatibility."""
 
 
 def set_asknews_credentials(
     client_id: str = "",
     client_secret: str = "",
+    api_key: str = "",
 ) -> None:
-    global _asknews_client_id, _asknews_client_secret
+    global _asknews_api_key, _asknews_client_id, _asknews_client_secret
+    _asknews_api_key = api_key
     _asknews_client_id = client_id
     _asknews_client_secret = client_secret
 
@@ -56,14 +52,13 @@ def set_search_provider(provider: str) -> None:
 def _resolve_provider() -> str:
     if _search_provider != "auto":
         return _search_provider
+    api_key = _asknews_api_key or os.environ.get("ASKNEWS_API_KEY", "")
+    if api_key:
+        return "asknews"
     an_id = _asknews_client_id or os.environ.get("ASKNEWS_CLIENT_ID", "")
     an_secret = _asknews_client_secret or os.environ.get("ASKNEWS_CLIENT_SECRET", "")
     if an_id and an_secret:
         return "asknews"
-    # Exa disabled — no fallback
-    # exa_key = _exa_api_key or os.environ.get("EXA_API_KEY", "")
-    # if exa_key:
-    #     return "exa"
     return "none"
 
 
@@ -71,14 +66,20 @@ def _resolve_provider() -> str:
 # AskNews provider
 # ---------------------------------------------------------------------------
 
+_SEARCH_LOOKBACK_DAYS = 90
+_LIVE_SEARCH_HOURS = 24 * 7
+_DEFAULT_QUALITY = 0.55
+
+
 def _search_asknews(
     query: str,
     max_results: int = 5,
     before_date: str | None = None,
 ) -> list[SearchResult]:
+    api_key = _asknews_api_key or os.environ.get("ASKNEWS_API_KEY", "")
     client_id = _asknews_client_id or os.environ.get("ASKNEWS_CLIENT_ID", "")
     client_secret = _asknews_client_secret or os.environ.get("ASKNEWS_CLIENT_SECRET", "")
-    if not client_id or not client_secret:
+    if not api_key and (not client_id or not client_secret):
         return []
 
     try:
@@ -88,32 +89,40 @@ def _search_asknews(
         return []
 
     try:
-        client = AskNewsSDK(client_id=client_id, client_secret=client_secret, scopes=["news"])
+        if api_key:
+            client = AskNewsSDK(api_key=api_key, scopes=["news"])
+        else:
+            client = AskNewsSDK(client_id=client_id, client_secret=client_secret, scopes=["news"])
+
         kwargs: dict = {
             "query": query,
             "n_articles": max_results + 3,
             "method": "both",
             "return_type": "dicts",
+            "historical": True,
         }
 
         if before_date:
-            # AskNews uses unix timestamps for time rollback.
-            # end_timestamp = cutoff date so we only see news published before it.
+            # Use start/end timestamps for precise time-gating.
+            # AskNews historical mode returns only articles published
+            # within the window — zero outcome leakage by design.
             cutoff_dt = parse_date(before_date)
             kwargs["end_timestamp"] = int(cutoff_dt.timestamp())
-            # Search broadly — up to 2 years back from cutoff
-            kwargs["hours_back"] = 24 * 365 * 2
+            start_dt = cutoff_dt - timedelta(days=_SEARCH_LOOKBACK_DAYS)
+            kwargs["start_timestamp"] = int(start_dt.timestamp())
         else:
-            kwargs["hours_back"] = 24 * 30  # last 30 days by default
+            kwargs["hours_back"] = _LIVE_SEARCH_HOURS
 
         response = client.news.search_news(**kwargs)
 
         results: list[SearchResult] = []
         articles = []
-        if hasattr(response, "articles"):
-            articles = response.articles or []
+        if hasattr(response, "as_dicts") and response.as_dicts:
+            articles = response.as_dicts
+        elif hasattr(response, "articles") and response.articles:
+            articles = response.articles
         elif isinstance(response, dict):
-            articles = response.get("articles", [])
+            articles = response.get("as_dicts") or response.get("articles") or []
 
         for article in articles:
             if isinstance(article, dict):
@@ -129,26 +138,19 @@ def _search_asknews(
                 pub_date = getattr(article, "pub_date", "") or ""
                 source_domain = getattr(article, "source_id", "") or ""
 
-            if not url:
-                try:
-                    source_domain = urlparse(url).netloc.replace("www.", "")
-                except Exception:
-                    pass
-
             if not source_domain and url:
                 try:
                     source_domain = urlparse(url).netloc.replace("www.", "")
                 except Exception:
                     source_domain = "unknown"
 
-            quality = 0.55
+            quality = _DEFAULT_QUALITY
             for key, score in SOURCE_QUALITY.items():
                 if key in source_domain:
                     quality = score
                     break
 
             source_type = _classify_source_type(source_domain)
-
             pub_date_str = str(pub_date) if pub_date else ""
 
             results.append(
@@ -170,91 +172,6 @@ def _search_asknews(
 
 
 # ---------------------------------------------------------------------------
-# Exa provider (disabled — kept for reference)
-# ---------------------------------------------------------------------------
-
-# def _search_exa(
-#     query: str,
-#     max_results: int = 5,
-#     before_date: str | None = None,
-# ) -> list[SearchResult]:
-#     api_key = _exa_api_key or os.environ.get("EXA_API_KEY", "")
-#     if not api_key:
-#         return []
-#
-#     try:
-#         from exa_py import Exa
-#     except ImportError:
-#         print("  [search] exa-py not installed. Run: pip install exa-py")
-#         return []
-#
-#     try:
-#         client = Exa(api_key=api_key)
-#         kwargs: dict = {
-#             "query": query,
-#             "num_results": max_results + 3,
-#             "type": "neural",
-#             "text": {"max_characters": 1500},
-#         }
-#         if before_date:
-#             kwargs["end_published_date"] = before_date
-#
-#         response = client.search_and_contents(**kwargs)
-#         results: list[SearchResult] = []
-#         filtered_count = 0
-#
-#         for r in response.results:
-#             title = r.title or ""
-#             content = (r.text or "")[:1500]
-#
-#             if before_date and r.published_date:
-#                 try:
-#                     if parse_date(r.published_date) > parse_date(before_date):
-#                         filtered_count += 1
-#                         continue
-#                 except Exception:
-#                     pass
-#
-#             if before_date and has_temporal_leak(content, title, before_date):
-#                 filtered_count += 1
-#                 continue
-#
-#             domain = ""
-#             try:
-#                 domain = urlparse(r.url).netloc.replace("www.", "")
-#             except Exception:
-#                 pass
-#
-#             quality = 0.55
-#             for key, score in SOURCE_QUALITY.items():
-#                 if key in domain:
-#                     quality = score
-#                     break
-#
-#             source_type = _classify_source_type(domain)
-#
-#             results.append(
-#                 SearchResult(
-#                     source=domain or "unknown",
-#                     source_type=source_type,
-#                     source_quality_score=quality,
-#                     title=title,
-#                     content=content,
-#                     url=r.url,
-#                     published_at=r.published_date or "",
-#                 )
-#             )
-#
-#         if filtered_count > 0:
-#             print(f"  [search] Filtered {filtered_count} results for temporal leakage")
-#
-#         return results
-#     except Exception as e:
-#         print(f"  [search] Exa search failed: {e}")
-#         return []
-
-
-# ---------------------------------------------------------------------------
 # Unified search dispatcher
 # ---------------------------------------------------------------------------
 
@@ -266,11 +183,8 @@ def search(
     provider = _resolve_provider()
     if provider == "asknews":
         return _search_asknews(query, max_results, before_date)
-    # elif provider == "exa":
-    #     return _search_exa(query, max_results, before_date)
-    else:
-        print("  [search] No search provider configured (set ASKNEWS_CLIENT_ID/SECRET)")
-        return []
+    print("  [search] No search provider configured (set ASKNEWS_API_KEY or ASKNEWS_CLIENT_ID/SECRET)")
+    return []
 
 
 def _classify_source_type(domain: str) -> str:
@@ -304,7 +218,6 @@ def judge_filter_leakage(
     if not results:
         return results
 
-    # Separate news (already safe from AskNews time-gate) from non-news
     safe: list[SearchResult] = []
     needs_review: list[SearchResult] = []
 
@@ -317,7 +230,6 @@ def judge_filter_leakage(
     if not needs_review:
         return safe
 
-    # Batch all non-news content for the judge in one call
     evidence_block = ""
     for i, r in enumerate(needs_review):
         evidence_block += (
@@ -377,7 +289,6 @@ def judge_filter_leakage(
 
     except Exception as e:
         print(f"  [judge] Judge filter failed, falling back to temporal heuristic: {e}")
-        # Fall back to the existing heuristic filter
         for r in needs_review:
             if cutoff_date and has_temporal_leak(r.content, r.title, cutoff_date):
                 continue
@@ -406,11 +317,7 @@ def search_for_question(
 
     if use_decomposition:
         queries = decompose_question_into_queries(
-            question,
-            domain,
-            cutoff_date,
-            provider,
-            cheap_model,
+            question, domain, cutoff_date, provider, cheap_model,
         )
         print(f"  [search] Decomposed into {len(queries)} queries: {[q[:50] for q in queries]}")
     else:
@@ -430,14 +337,10 @@ def search_for_question(
                 seen_urls.add(r.url)
                 all_results.append(r)
 
-    # Run judge model on non-news results to filter outcome leakage
     if use_judge and cutoff_date:
         all_results = judge_filter_leakage(
-            all_results,
-            question,
-            cutoff_date,
-            llm_provider=provider,
-            judge_model=cheap_model,
+            all_results, question, cutoff_date,
+            llm_provider=provider, judge_model=cheap_model,
         )
 
     all_results.sort(key=lambda r: r.source_quality_score, reverse=True)
